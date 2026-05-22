@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>給料計算システム</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>💰 給料計算システム</h1>
+  <p>勤務時間を入力すると自動で給料を計算します</p>
+</header>
+
+<!-- 時給設定 -->
+<div class="card">
+  <div class="card-title">⚙️ 時給設定</div>
+  <div class="wage-row">
+    <div class="wage-field">
+      <label>基本時給（円）</label>
+      <input type="number" id="wage" value="1300" step="10" min="0" />
+    </div>
+    <div class="wage-field">
+      <label>残業時給（円）</label>
+      <input type="number" id="overtime-wage" value="1500" step="10" min="0" />
+    </div>
+  </div>
+</div>
+
+<!-- 勤務時間入力 -->
+<div class="card">
+  <div class="card-title">📅 勤務時間の入力</div>
+
+  <!-- メイン入力ボタン -->
+  <div style="margin-top:14px;">
+    <div class="quick-label">🚀 よく使う時間をワンタップで追加</div>
+    <div class="quick-btns" id="quick-btns"></div>
+  </div>
+
+    <!-- サブ入力 -->
+  <p class="hint">手動で入力</p>
+  <div class="entry-row">
+    <input type="number" id="time-input" placeholder="例：8.5（時間）" step="0.25" min="0" />
+    <button class="btn btn-add" id="add-btn" onclick="addEntry()">＋ 追加</button>
+  </div>
+  <p class="hint">⌨️ Enter キーでも追加できます</p>
+
+  <!-- まとめて入力 -->
+  <details class="batch-area">
+    <summary>📋 まとめて入力（複数日を一括追加）</summary>
+    <div class="batch-inner">
+      <textarea id="batch-input" placeholder="8&#10;7.5&#10;9&#10;8&#10;（1行に1つ入力）"></textarea>
+      <button class="btn btn-batch" onclick="addBatch()">一括追加</button>
+    </div>
+  </details>
+
+  <!-- 入力済みリスト -->
+  <div style="margin-top:14px;">
+    <ul id="day-list"><li class="empty">まだ入力がありません</li></ul>
+  </div>
+
+  <!-- アクション -->
+  <div class="action-row">
+    <button class="btn btn-calc" onclick="calculate()">計算する</button>
+    <button class="btn btn-reset" onclick="resetAll()">リセット</button>
+  </div>
+</div>
+
+<!-- 結果 -->
+<div class="card" id="result">
+  <div class="card-title">📊 計算結果</div>
+  <div class="result-total">
+    <div class="label">合計給料</div>
+    <div><span class="amount" id="total-amount">0</span><span class="unit">円</span></div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="sv sv-days" id="stat-days">0</div><div class="sk">勤務日数</div></div>
+    <div class="stat-box"><div class="sv sv-hours" id="stat-hours">0.0</div><div class="sk">実働合計（h）</div></div>
+    <div class="stat-box"><div class="sv sv-ot" id="stat-ot">0.0</div><div class="sk">残業合計（h）</div></div>
+  </div>
+  <div class="breakdown">
+    <div class="breakdown-title">日別明細</div>
+    <table>
+      <thead>
+        <tr>
+          <th>日</th><th>投入時間</th><th>休憩</th>
+          <th class="td-center">実働</th><th class="td-center">残業</th><th class="td-right">給料</th>
+        </tr>
+      </thead>
+      <tbody id="detail-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
